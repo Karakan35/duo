@@ -477,43 +477,130 @@ const AdminPanel = ({ user, onClose, onTaskCreated }) => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {DAYS.map(day => (
-                    <div key={day} className="border border-gray-800 rounded-lg p-4 bg-gray-900/50">
-                      <h4 className="font-bold text-gray-300 mb-2">{day}</h4>
-                      {tasksByDay[day].length === 0 ? (
-                        <p className="text-gray-500 text-sm">Görev yok</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {tasksByDay[day].map(task => (
-                            <div
-                              key={task.id}
-                              className="flex items-center justify-between bg-gray-800 rounded-lg p-3"
-                              data-testid={`admin-task-${task.id}`}
-                            >
-                              <div>
-                                <span className="font-medium text-white">{task.title}</span>
-                                <span className="text-sm text-gray-400 ml-2 inline-flex items-center gap-1">
-                                  {task.strength > 0 && <span className="text-red-400">💪{task.strength}</span>}
-                                  {task.agility > 0 && <span className="text-yellow-400">⚡{task.agility}</span>}
-                                  {task.charisma > 0 && <span className="text-pink-400">✨{task.charisma}</span>}
-                                  {task.endurance > 0 && <span className="text-green-400">🛡️{task.endurance}</span>}
-                                </span>
+                  {DAYS.map(day => {
+                    // Group tasks by character for this day
+                    const bellatrixTasks = tasksByDay[day].filter(t => t.assigned_to === 'user_bellatrix');
+                    const agamemnonTasks = tasksByDay[day].filter(t => t.assigned_to === 'user_agamemnon');
+                    const bothTasks = tasksByDay[day].filter(t => !t.assigned_to || t.assigned_to === 'both');
+                    
+                    const hasAnyTasks = tasksByDay[day].length > 0;
+                    
+                    return (
+                      <div key={day} className="border border-gray-800 rounded-lg p-4 bg-gray-900/50">
+                        <h4 className="font-bold text-gray-300 mb-3 text-lg">{day}</h4>
+                        {!hasAnyTasks ? (
+                          <p className="text-gray-500 text-sm">Görev yok</p>
+                        ) : (
+                          <div className="space-y-4">
+                            {/* Bellatrix Tasks */}
+                            {bellatrixTasks.length > 0 && (
+                              <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-pink-500">
+                                <h5 className="text-sm font-bold text-pink-300 mb-2">🗡️ Bellatrix'in Görevleri</h5>
+                                <div className="space-y-2">
+                                  {bellatrixTasks.map(task => (
+                                    <div
+                                      key={task.id}
+                                      className="flex items-center justify-between bg-gray-800 rounded-lg p-3"
+                                      data-testid={`admin-task-${task.id}`}
+                                    >
+                                      <div>
+                                        <span className="font-medium text-white">{task.title}</span>
+                                        <span className="text-sm text-gray-400 ml-2 inline-flex items-center gap-1">
+                                          {task.strength > 0 && <span className="text-red-400">💪{task.strength}</span>}
+                                          {task.agility > 0 && <span className="text-yellow-400">⚡{task.agility}</span>}
+                                          {task.charisma > 0 && <span className="text-pink-400">✨{task.charisma}</span>}
+                                          {task.endurance > 0 && <span className="text-green-400">🛡️{task.endurance}</span>}
+                                        </span>
+                                      </div>
+                                      <button
+                                        onClick={() => handleDelete(task.id)}
+                                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-900/20 rounded transition-all"
+                                        data-testid={`delete-task-${task.id}`}
+                                      >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
-                              <button
-                                onClick={() => handleDelete(task.id)}
-                                className="text-red-400 hover:text-red-300 p-2 hover:bg-red-900/20 rounded transition-all"
-                                data-testid={`delete-task-${task.id}`}
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                            )}
+                            
+                            {/* Agamemnon Tasks */}
+                            {agamemnonTasks.length > 0 && (
+                              <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-blue-500">
+                                <h5 className="text-sm font-bold text-blue-300 mb-2">⚔️ Agamemnon'un Görevleri</h5>
+                                <div className="space-y-2">
+                                  {agamemnonTasks.map(task => (
+                                    <div
+                                      key={task.id}
+                                      className="flex items-center justify-between bg-gray-800 rounded-lg p-3"
+                                      data-testid={`admin-task-${task.id}`}
+                                    >
+                                      <div>
+                                        <span className="font-medium text-white">{task.title}</span>
+                                        <span className="text-sm text-gray-400 ml-2 inline-flex items-center gap-1">
+                                          {task.strength > 0 && <span className="text-red-400">💪{task.strength}</span>}
+                                          {task.agility > 0 && <span className="text-yellow-400">⚡{task.agility}</span>}
+                                          {task.charisma > 0 && <span className="text-pink-400">✨{task.charisma}</span>}
+                                          {task.endurance > 0 && <span className="text-green-400">🛡️{task.endurance}</span>}
+                                        </span>
+                                      </div>
+                                      <button
+                                        onClick={() => handleDelete(task.id)}
+                                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-900/20 rounded transition-all"
+                                        data-testid={`delete-task-${task.id}`}
+                                      >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Both Tasks */}
+                            {bothTasks.length > 0 && (
+                              <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-purple-500">
+                                <h5 className="text-sm font-bold text-purple-300 mb-2">🤝 Her İkisi İçin</h5>
+                                <div className="space-y-2">
+                                  {bothTasks.map(task => (
+                                    <div
+                                      key={task.id}
+                                      className="flex items-center justify-between bg-gray-800 rounded-lg p-3"
+                                      data-testid={`admin-task-${task.id}`}
+                                    >
+                                      <div>
+                                        <span className="font-medium text-white">{task.title}</span>
+                                        <span className="text-sm text-gray-400 ml-2 inline-flex items-center gap-1">
+                                          {task.strength > 0 && <span className="text-red-400">💪{task.strength}</span>}
+                                          {task.agility > 0 && <span className="text-yellow-400">⚡{task.agility}</span>}
+                                          {task.charisma > 0 && <span className="text-pink-400">✨{task.charisma}</span>}
+                                          {task.endurance > 0 && <span className="text-green-400">🛡️{task.endurance}</span>}
+                                        </span>
+                                      </div>
+                                      <button
+                                        onClick={() => handleDelete(task.id)}
+                                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-900/20 rounded transition-all"
+                                        data-testid={`delete-task-${task.id}`}
+                                      >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
