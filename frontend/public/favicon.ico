@@ -1,0 +1,19 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#2d3561"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)" rx="80"/>
+  <rect x="10" y="10" width="492" height="492" fill="none" stroke="#3b82f6" stroke-width="4" opacity="0.3" rx="75"/>
+  <g transform="translate(256, 256)">
+    <rect x="-15" y="-120" width="30" height="240" fill="#3b82f6" rx="5"/>
+    <rect x="-80" y="-30" width="160" height="20" fill="#60a5fa" rx="10"/>
+    <rect x="-12" y="100" width="24" height="60" fill="#93c5fd" rx="12"/>
+    <circle cx="0" cy="170" r="18" fill="#60a5fa"/>
+    <rect x="-8" y="-110" width="4" height="200" fill="#93c5fd" opacity="0.6" rx="2"/>
+  </g>
+  <text x="256" y="460" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#60a5fa" text-anchor="middle">DUO</text>
+</svg>

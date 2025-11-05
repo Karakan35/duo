@@ -1,0 +1,30 @@
+{
+  "short_name": "Duo Leveling",
+  "name": "Duo Leveling - Spor Takip",
+  "description": "Solo Leveling temalı spor takip ve RPG stat uygulaması",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a1a2e",
+  "background_color": "#0f0f1e",
+  "orientation": "portrait"
+}
